@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,8 @@
 		42486AD024C39A7F008665AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42486ACE24C39A7F008665AA /* Main.storyboard */; };
 		42486ADC24C39A7F008665AA /* TestCloudKitFeatureFlagsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42486ADB24C39A7F008665AA /* TestCloudKitFeatureFlagsTests.swift */; };
 		42486AE724C39A7F008665AA /* TestCloudKitFeatureFlagsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42486AE624C39A7F008665AA /* TestCloudKitFeatureFlagsUITests.swift */; };
+		42486AF924C3A72F008665AA /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 42486AF824C3A72F008665AA /* CloudKit.framework */; };
+		4250F00F24C3ABB200E38ADA /* CloudKitFeatureFlags in Frameworks */ = {isa = PBXBuildFile; productRef = 4250F00E24C3ABB200E38ADA /* CloudKitFeatureFlags */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,7 @@
 		42486AE224C39A7F008665AA /* TestCloudKitFeatureFlagsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestCloudKitFeatureFlagsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42486AE624C39A7F008665AA /* TestCloudKitFeatureFlagsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCloudKitFeatureFlagsUITests.swift; sourceTree = "<group>"; };
 		42486AE824C39A7F008665AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42486AF824C3A72F008665AA /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4250F00F24C3ABB200E38ADA /* CloudKitFeatureFlags in Frameworks */,
+				42486AF924C3A72F008665AA /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +87,7 @@
 				42486ADA24C39A7F008665AA /* TestCloudKitFeatureFlagsTests */,
 				42486AE524C39A7F008665AA /* TestCloudKitFeatureFlagsUITests */,
 				42486AC324C39A7D008665AA /* Products */,
+				42486AF724C3A72F008665AA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,6 +141,14 @@
 			path = TestCloudKitFeatureFlagsUITests;
 			sourceTree = "<group>";
 		};
+		42486AF724C3A72F008665AA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				42486AF824C3A72F008665AA /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -151,6 +165,9 @@
 			dependencies = (
 			);
 			name = TestCloudKitFeatureFlags;
+			packageProductDependencies = (
+				4250F00E24C3ABB200E38ADA /* CloudKitFeatureFlags */,
+			);
 			productName = TestCloudKitFeatureFlags;
 			productReference = 42486AC224C39A7D008665AA /* TestCloudKitFeatureFlags.app */;
 			productType = "com.apple.product-type.application";
@@ -222,6 +239,9 @@
 				Base,
 			);
 			mainGroup = 42486AB924C39A7D008665AA;
+			packageReferences = (
+				4250F00D24C3ABB200E38ADA /* XCRemoteSwiftPackageReference "CloudKitFeatureFlags" */,
+			);
 			productRefGroup = 42486AC324C39A7D008665AA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -600,6 +620,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4250F00D24C3ABB200E38ADA /* XCRemoteSwiftPackageReference "CloudKitFeatureFlags" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/codeOfRobin/CloudKitFeatureFlags/";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4250F00E24C3ABB200E38ADA /* CloudKitFeatureFlags */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4250F00D24C3ABB200E38ADA /* XCRemoteSwiftPackageReference "CloudKitFeatureFlags" */;
+			productName = CloudKitFeatureFlags;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 42486ABA24C39A7D008665AA /* Project object */;
 }

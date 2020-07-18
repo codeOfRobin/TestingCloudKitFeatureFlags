@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CloudKitFeatureFlags",
+        "repositoryURL": "https://github.com/codeOfRobin/CloudKitFeatureFlags/",
+        "state": {
+          "branch": "main",
+          "revision": "f9d4ca1325b4b3072b5a10dbb75fdfbcd7e87fe4",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
