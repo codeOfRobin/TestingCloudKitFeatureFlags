@@ -626,7 +626,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/codeOfRobin/CloudKitFeatureFlags/";
 			requirement = {
-				branch = main;
+				branch = add_verification_api;
 				kind = branch;
 			};
 		};

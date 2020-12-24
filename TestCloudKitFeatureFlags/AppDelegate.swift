@@ -35,26 +35,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
 
-		featureFlags.featureEnabled(name: "some_feature_flag").sink(receiveCompletion: { (completion) in
-			print(completion)
-		}) { (value) in
-			print(value)
-		}.store(in: &cancellables)
-		createFeatureFlagIfNecessary()
-	}
+		setupFeatureFlags()
+        
+        featureFlags.DEBUGGING_AND_VERIFICATION.sendDataToVerificationServer(url: URL(string: "https://insert_url_here")!).sink { (error) in
+            print(error)
+        } receiveValue: { (data, response) in
+            print(data)
+            print((response as? HTTPURLResponse)?.statusCode)
+        }.store(in: &cancellables)
 
-	func createFeatureFlagIfNecessary() {
-		let featureFlag = FeatureFlag(name: "some_feature_flag", uuid: UUID(), rollout: 0.1, value: true)
-		container.featureFlaggingDatabase.fetch(withRecordID: .init(recordName: "some_feature_flag")) { [weak self] (record, error) in
-			if record == nil {
-				self?.container.featureFlaggingDatabase.save(featureFlag.convertToRecord()) { (record, error) in
-					print(record as Any)
-				}
-			} else {
-				print(record as Any)
-			}
-		}
 	}
+    
+    func setupFeatureFlags() {
+        let featureFlagNames = ["discountBanner", "testFeatureFlag1", "testFeatureFlag2", "testFeatureFlag3", "prodFeatureFlag1", "prodFeatureFlag2", "prodFeatureFlag3", "prodFeatureFlag4"]
+        for (index, name) in featureFlagNames.enumerated() {
+            let featureFlag = FeatureFlag(name: name, uuid: UUID(), rollout: 0.1 * Float((index % 10)), value: true)
+            container.featureFlaggingDatabase.fetch(withRecordID: .init(recordName: name)) { [weak self] (record, error) in
+                if record == nil {
+                    self?.container.featureFlaggingDatabase.save(featureFlag.convertToRecord()) { (record, error) in
+                        print(record as Any)
+                    }
+                } else {
+                    print(record as Any)
+                }
+            }
+        }
+    }
 
 	func applicationWillTerminate(_ aNotification: Notification) {
 		// Insert code here to tear down your application
