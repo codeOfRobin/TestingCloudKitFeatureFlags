@@ -49,7 +49,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func setupFeatureFlags() {
         let featureFlagNames = ["discountBanner", "testFeatureFlag1", "testFeatureFlag2", "testFeatureFlag3", "prodFeatureFlag1", "prodFeatureFlag2", "prodFeatureFlag3", "prodFeatureFlag4"]
         for (index, name) in featureFlagNames.enumerated() {
-            let featureFlag = FeatureFlag(name: name, uuid: UUID(), rollout: 0.1 * Float((index % 10)), value: true)
+            let featureFlag = FeatureFlag(name: FeatureFlag.Name(rawValue: name), uuid: UUID(), rollout: 0.1 * Float((index % 10)), value: true)
             container.featureFlaggingDatabase.fetch(withRecordID: .init(recordName: name)) { [weak self] (record, error) in
                 if record == nil {
                     self?.container.featureFlaggingDatabase.save(featureFlag.convertToRecord()) { (record, error) in

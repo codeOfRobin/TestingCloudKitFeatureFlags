@@ -5,8 +5,8 @@
         "package": "CloudKitFeatureFlags",
         "repositoryURL": "https://github.com/codeOfRobin/CloudKitFeatureFlags/",
         "state": {
-          "branch": "add_verification_api",
-          "revision": "9d3d0e502b95786a4af3a9323f830e0afd2ed155",
+          "branch": "main",
+          "revision": "0fce7304011761002c190fd2261a3d2dda931104",
           "version": null
         }
       }
