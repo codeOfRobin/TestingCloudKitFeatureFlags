@@ -17,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 	var window: NSWindow!
 
+    //Sub in your own container ID for testing
 	let container = CKContainer(identifier: "iCloud.com.rmalhotra.CloudKitTrial")
 	lazy var featureFlags = CloudKitFeatureFlagsRepository(container: container)
 	var cancellables = Set<AnyCancellable>()
@@ -39,15 +40,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
 
-		setupFeatureFlags()
-        
-//        featureFlags.DEBUGGING_AND_VERIFICATION.sendDataToVerificationServer(url: URL(string: "https://insert_url_here")!).sink { (error) in
-//            print(error)
-//        } receiveValue: { (data, response) in
-//            print(data)
-//            print((response as? HTTPURLResponse)?.statusCode)
-//        }.store(in: &cancellables)
-//
         let notificationInfo = CKSubscription.NotificationInfo()
         notificationInfo.shouldBadge = false;
         notificationInfo.shouldSendContentAvailable = true;
@@ -67,6 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.container.publicCloudDatabase.fetch(withRecordID: CKRecord.ID.init(recordName: "testFeatureFlag1"), completionHandler: { [self]
                 record, error in
                 
+                //Updating a record here
                 record?.setValue(0.2, forKey: "rollout")
                 container.publicCloudDatabase.save(record!) { (record, error) in
                     print(record)
@@ -87,6 +80,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let notification = CKQueryNotification(fromRemoteNotificationDictionary: userInfo)
         print(notification)
     }
+    
+    
+    //<Anything below isn't relevant for code review purposes>
     
     func setupFeatureFlags() {
         let featureFlagNames = ["discountBanner", "testFeatureFlag1", "testFeatureFlag2", "testFeatureFlag3", "prodFeatureFlag1", "prodFeatureFlag2", "prodFeatureFlag3", "prodFeatureFlag4"]
