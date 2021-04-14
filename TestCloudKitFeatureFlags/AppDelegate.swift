@@ -9,6 +9,7 @@ import Cocoa
 import SwiftUI
 import CloudKitFeatureFlags
 import Combine
+import UserNotifications
 import CloudKit
 
 @NSApplicationMain
@@ -19,6 +20,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	let container = CKContainer(identifier: "iCloud.com.rmalhotra.CloudKitTrial")
 	lazy var featureFlags = CloudKitFeatureFlagsRepository(container: container)
 	var cancellables = Set<AnyCancellable>()
+    
+    let predicate = NSPredicate(value: true)
+    lazy var subscription = CKQuerySubscription(recordType: "FeatureFlag", predicate: predicate, options: [.firesOnRecordUpdate])
 
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Create the SwiftUI view that provides the window contents.
@@ -37,14 +41,52 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 		setupFeatureFlags()
         
-        featureFlags.DEBUGGING_AND_VERIFICATION.sendDataToVerificationServer(url: URL(string: "https://insert_url_here")!).sink { (error) in
+//        featureFlags.DEBUGGING_AND_VERIFICATION.sendDataToVerificationServer(url: URL(string: "https://insert_url_here")!).sink { (error) in
+//            print(error)
+//        } receiveValue: { (data, response) in
+//            print(data)
+//            print((response as? HTTPURLResponse)?.statusCode)
+//        }.store(in: &cancellables)
+//
+        let notificationInfo = CKSubscription.NotificationInfo()
+        notificationInfo.shouldBadge = false;
+        notificationInfo.shouldSendContentAvailable = true;
+        subscription.notificationInfo = notificationInfo
+        container.publicCloudDatabase.save(subscription) { (subscription, error) in
             print(error)
-        } receiveValue: { (data, response) in
-            print(data)
-            print((response as? HTTPURLResponse)?.statusCode)
-        }.store(in: &cancellables)
-
+            print(subscription)
+        }
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (registered, error) in
+            DispatchQueue.main.async {
+                NSApp.registerForRemoteNotifications()
+            }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.container.publicCloudDatabase.fetch(withRecordID: CKRecord.ID.init(recordName: "testFeatureFlag1"), completionHandler: { [self]
+                record, error in
+                
+                record?.setValue(0.2, forKey: "rollout")
+                container.publicCloudDatabase.save(record!) { (record, error) in
+                    print(record)
+                }
+            })
+        }
 	}
+    
+    func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+
+    }
+    
+    func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        
+    }
+    
+    func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
+        let notification = CKQueryNotification(fromRemoteNotificationDictionary: userInfo)
+        print(notification)
+    }
     
     func setupFeatureFlags() {
         let featureFlagNames = ["discountBanner", "testFeatureFlag1", "testFeatureFlag2", "testFeatureFlag3", "prodFeatureFlag1", "prodFeatureFlag2", "prodFeatureFlag3", "prodFeatureFlag4"]
