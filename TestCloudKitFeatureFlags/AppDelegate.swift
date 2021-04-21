@@ -13,7 +13,7 @@ import UserNotifications
 import CloudKit
 
 @NSApplicationMain
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, UNUserNotificationCenterDelegate {
 
 	var window: NSWindow!
 
@@ -49,6 +49,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             print(subscription)
         }
         
+        UNUserNotificationCenter.current().delegate = self
+        
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (registered, error) in
             DispatchQueue.main.async {
                 NSApp.registerForRemoteNotifications()
@@ -75,6 +77,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         
     }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert])
+      }
     
     func application(_ application: NSApplication, didReceiveRemoteNotification userInfo: [String : Any]) {
         let notification = CKQueryNotification(fromRemoteNotificationDictionary: userInfo)
